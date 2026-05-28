@@ -257,6 +257,51 @@ const FloatingEmojis = () => {
   );
 };
 
+const RegistrationForm = () => {
+  const [formData, setFormData] = useState({ parentName: '', phone: '', childAge: '', note: '' });
+  const [status, setStatus] = useState('idle'); // idle, loading, success, error
+  const [message, setMessage] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setStatus('loading');
+    try {
+      const res = await fetch('http://localhost:5000/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setStatus('success');
+        setMessage(data.message);
+        setFormData({ parentName: '', phone: '', childAge: '', note: '' });
+      } else {
+        setStatus('error');
+        setMessage(data.error);
+      }
+    } catch (err) {
+      setStatus('error');
+      setMessage('Không thể kết nối đến server.');
+    }
+  };
+
+  return (
+    <form className="registration-form glass-card" onSubmit={handleSubmit} style={{ position: 'relative', zIndex: 20 }}>
+      <input type="text" placeholder="Tên Phụ Huynh *" required value={formData.parentName} onChange={e => setFormData({...formData, parentName: e.target.value})} />
+      <input type="tel" placeholder="Số điện thoại *" required value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} />
+      <input type="text" placeholder="Độ tuổi của bé" value={formData.childAge} onChange={e => setFormData({...formData, childAge: e.target.value})} />
+      <textarea placeholder="Ghi chú thêm" value={formData.note} onChange={e => setFormData({...formData, note: e.target.value})} rows="3"></textarea>
+      
+      {message && <div className={`form-msg ${status}`}>{message}</div>}
+      
+      <button type="submit" className="btn-glow" disabled={status === 'loading'} style={{ width: '100%', marginTop: '10px', cursor: 'none' }}>
+        {status === 'loading' ? 'Đang gửi...' : 'Đăng ký ngay'}
+      </button>
+    </form>
+  );
+};
+
 // --- App ---
 const App = () => {
   const [loading, setLoading] = useState(true);
@@ -534,10 +579,7 @@ const App = () => {
           <div className="cta-box">
             <h2>Bắt Đầu Hành Trình Cùng Bé Yêu!</h2>
             <p>Đăng ký tham quan miễn phí ngay hôm nay để nhận ưu đãi học phí cực khủng!</p>
-            <div style={{ display: 'flex', gap: '30px', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap' }}>
-              <a href="#" className="btn-outline" style={{ background: 'white', color: '#03A9F4', border: 'none' }}>Đăng ký trực tuyến</a>
-              <h3 style={{ fontSize: '32px', textShadow: '0 0 20px white' }}>Hotline: 0123 456 789</h3>
-            </div>
+            <RegistrationForm />
           </div>
         </div>
       </section>
