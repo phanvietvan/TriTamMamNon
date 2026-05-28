@@ -36,7 +36,7 @@ const CuteBear = () => {
   const bellyColor = "#FFE0B2";
 
   return (
-    <group ref={group} position={[0, 0, 0]} scale={1.5}>
+    <group ref={group} position={[0, -0.5, 0]} scale={0.7}>
       {/* Head */}
       <Sphere args={[0.8, 64, 64]} position={[0, 1.2, 0]}>
         <meshStandardMaterial color={bodyColor} roughness={0.6} />
