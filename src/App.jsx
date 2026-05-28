@@ -412,7 +412,7 @@ const App = () => {
             <li><a href="#about">Vì sao chọn</a></li>
             <li><a href="#gallery">Thư viện</a></li>
           </ul>
-          <a href="#contact" className="btn-glow" style={{ padding: '10px 24px' }}>Đăng ký tham quan</a>
+          <a href="#contact" className="btn-glow" style={{ padding: '10px 24px' }}>Đăng ký cho bé ngay</a>
         </div>
       </nav>
 
@@ -428,7 +428,7 @@ const App = () => {
             <h1 className="hero-title">Nuôi dưỡng tuổi thơ bằng yêu thương</h1>
             <p className="hero-slogan">Môi trường giáo dục hiện đại giúp trẻ phát triển toàn diện từ những năm đầu đời. Hành trang vững chắc cho tương lai của bé.</p>
             <div className="hero-buttons">
-              <a href="#contact" className="btn-glow">Đăng ký tham quan</a>
+              <a href="#contact" className="btn-glow">Đăng ký cho bé ngay</a>
               <a href="#curriculum" className="btn-outline">Xem chương trình</a>
             </div>
           </motion.div>
