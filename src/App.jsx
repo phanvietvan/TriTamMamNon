@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, Suspense } from 'react';
 import { motion, useScroll, useSpring, useTransform, AnimatePresence } from 'framer-motion';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import Lenis from 'lenis';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Float, Sphere, Capsule, MeshDistortMaterial, Environment, ContactShadows, RoundedBox } from '@react-three/drei';
 import { FaGraduationCap, FaCamera, FaHeart, FaAppleAlt, FaQuoteRight, FaFacebookF, FaYoutube, FaInstagram, FaGlobeAmericas } from 'react-icons/fa';
@@ -157,7 +158,7 @@ const MascotScene = () => {
         <CutePanda />
       </Float>
 
-      <ContactShadows position={[0, -1.5, 0]} opacity={0.5} scale={10} blur={3} far={4} color="#000000" />
+      <ContactShadows position={[0, -1.5, 0]} opacity={0.6} scale={15} blur={2.5} far={4} color="#03A9F4" />
     </>
   );
 };
@@ -328,6 +329,22 @@ const App = () => {
       });
     }, 100);
 
+    // Lenis Smooth Scroll Setup
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
+      direction: 'vertical',
+      gestureDirection: 'vertical',
+      smooth: true,
+      mouseMultiplier: 1,
+      smoothTouch: false,
+      touchMultiplier: 2,
+    });
+
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+    gsap.ticker.lagSmoothing(0);
+
     const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
 
@@ -345,6 +362,7 @@ const App = () => {
 
     return () => {
       clearInterval(interval);
+      lenis.destroy();
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('mousemove', handleMouseMove);
     };
@@ -435,7 +453,7 @@ const App = () => {
 
           <div className="hero-3d-container">
             <div className="speech-bubble">👋 Xin chào bé yêu đến với Nhóm Trẻ Trí Tâm!</div>
-            <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
+            <Canvas dpr={[1, 2]} gl={{ antialias: true, alpha: true }} camera={{ position: [0, 0, 5], fov: 45 }}>
               <Suspense fallback={null}>
                 <MascotScene />
               </Suspense>
