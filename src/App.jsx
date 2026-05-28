@@ -148,7 +148,7 @@ const MascotScene = () => {
       {/* Key Light */}
       <spotLight position={[10, 15, 10]} angle={0.3} penumbra={1} intensity={2.5} color="#ffffff" castShadow />
       {/* Fill Light */}
-      <pointLight position={[-10, 5, 10]} intensity={1.5} color="#FFD180" />
+      <pointLight position={[-10, 5, 10]} intensity={1.5} color="#4FC3F7" />
       {/* Rim Light for cinematic look */}
       <pointLight position={[0, 5, -10]} intensity={3} color="#80D8FF" />
       <Environment preset="city" />
@@ -389,7 +389,7 @@ const App = () => {
           </motion.div>
 
           <div className="hero-3d-container">
-            <div className="speech-bubble">👋 Xin chào bé yêu đến với Trí Tâm!</div>
+            <div className="speech-bubble">👋 Xin chào bé yêu đến với Nhóm Trẻ Trí Tâm!</div>
             <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
               <Suspense fallback={null}>
                 <MascotScene />
@@ -535,7 +535,7 @@ const App = () => {
             <h2>Bắt Đầu Hành Trình Cùng Bé Yêu!</h2>
             <p>Đăng ký tham quan miễn phí ngay hôm nay để nhận ưu đãi học phí cực khủng!</p>
             <div style={{ display: 'flex', gap: '30px', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap' }}>
-              <a href="#" className="btn-outline" style={{ background: 'white', color: '#FF5722', border: 'none' }}>Đăng ký trực tuyến</a>
+              <a href="#" className="btn-outline" style={{ background: 'white', color: '#03A9F4', border: 'none' }}>Đăng ký trực tuyến</a>
               <h3 style={{ fontSize: '32px', textShadow: '0 0 20px white' }}>Hotline: 0123 456 789</h3>
             </div>
           </div>
@@ -548,7 +548,7 @@ const App = () => {
           <div className="footer-grid">
             <div className="footer-about">
               <a href="#" className="nav-logo">✨ Trí Tâm</a>
-              <p>Trường mầm non tiên phong ứng dụng phương pháp giáo dục hiện đại, chuẩn quốc tế tại Việt Nam.</p>
+              <p>Nhóm trẻ tiên phong ứng dụng phương pháp giáo dục hiện đại, chuẩn quốc tế tại Việt Nam.</p>
               <div style={{ display: 'flex', gap: '15px', marginTop: '30px' }}>
                 <a href="#" className="social-icon"><FaFacebookF /></a>
                 <a href="#" className="social-icon"><FaYoutube /></a>
@@ -586,7 +586,7 @@ const App = () => {
             </div>
           </div>
           <div className="footer-bottom">
-            &copy; 2026 Trí Tâm Kindergarten. Designed with 💖.
+            &copy; 2026 Nhóm Trẻ Trí Tâm. Designed with 💖.
           </div>
         </div>
       </footer>
