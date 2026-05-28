@@ -10,107 +10,133 @@ import * as THREE from 'three';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// --- 3D MASCOT: Cute Teddy Bear ---
-const CuteBear = () => {
+// --- 3D MASCOT: Cute Pixar-Style Panda ---
+const CutePanda = () => {
   const group = useRef();
   const leftArm = useRef();
+  const rightArm = useRef();
+  const head = useRef();
   const { pointer } = useThree();
 
   useFrame((state) => {
     const t = state.clock.getElapsedTime();
     
-    // Floating motion
-    group.current.position.y = Math.sin(t * 2) * 0.1;
+    // Smooth floating
+    group.current.position.y = Math.sin(t * 2.5) * 0.08 - 0.2;
     
-    // Looking at mouse
-    const targetX = (pointer.x * 0.5);
-    const targetY = (pointer.y * 0.5);
-    group.current.rotation.y = THREE.MathUtils.lerp(group.current.rotation.y, targetX, 0.1);
-    group.current.rotation.x = THREE.MathUtils.lerp(group.current.rotation.x, -targetY, 0.1);
+    // Head looking at mouse with smooth easing
+    const targetX = pointer.x * 0.8;
+    const targetY = pointer.y * 0.8;
+    head.current.rotation.y = THREE.MathUtils.lerp(head.current.rotation.y, targetX, 0.08);
+    head.current.rotation.x = THREE.MathUtils.lerp(head.current.rotation.x, -targetY, 0.08);
     
-    // Waving hand
-    leftArm.current.rotation.z = Math.sin(t * 5) * 0.5 - 0.5;
+    // Cute arm waving
+    leftArm.current.rotation.z = Math.sin(t * 6) * 0.4 - 0.4;
+    rightArm.current.rotation.z = Math.sin(t * 4) * 0.1 + 0.4;
   });
 
-  const bodyColor = "#FFB74D";
-  const bellyColor = "#FFE0B2";
+  const furWhite = "#FAFAFA";
+  const furBlack = "#2C3E50";
+  const blushColor = "#FF8A80";
 
   return (
-    <group ref={group} position={[0, -0.5, 0]} scale={0.7}>
-      {/* Head */}
-      <Sphere args={[0.8, 64, 64]} position={[0, 1.2, 0]}>
-        <meshStandardMaterial color={bodyColor} roughness={0.6} />
-      </Sphere>
-      
-      {/* Muzzle */}
-      <Sphere args={[0.3, 32, 32]} position={[0, 1.1, 0.75]} scale={[1.2, 0.9, 1]}>
-        <meshStandardMaterial color={bellyColor} />
-      </Sphere>
-      
-      {/* Nose */}
-      <Sphere args={[0.08, 16, 16]} position={[0, 1.15, 1.02]}>
-        <meshStandardMaterial color="#333" />
-      </Sphere>
-
-      {/* Eyes */}
-      <Sphere args={[0.08, 16, 16]} position={[-0.3, 1.35, 0.65]}>
-        <meshStandardMaterial color="#333" />
-      </Sphere>
-      <Sphere args={[0.08, 16, 16]} position={[0.3, 1.35, 0.65]}>
-        <meshStandardMaterial color="#333" />
-      </Sphere>
-
-      {/* Blush */}
-      <Sphere args={[0.15, 16, 16]} position={[-0.45, 1.15, 0.6]} scale={[1, 0.5, 0.1]}>
-        <meshStandardMaterial color="#FF5252" opacity={0.5} transparent />
-      </Sphere>
-      <Sphere args={[0.15, 16, 16]} position={[0.45, 1.15, 0.6]} scale={[1, 0.5, 0.1]}>
-        <meshStandardMaterial color="#FF5252" opacity={0.5} transparent />
-      </Sphere>
-
-      {/* Ears */}
-      <Sphere args={[0.3, 32, 32]} position={[-0.6, 1.7, 0]}>
-        <meshStandardMaterial color={bodyColor} />
-      </Sphere>
-      <Sphere args={[0.15, 32, 32]} position={[-0.6, 1.7, 0.15]} scale={[1, 1, 0.2]}>
-        <meshStandardMaterial color={bellyColor} />
-      </Sphere>
-
-      <Sphere args={[0.3, 32, 32]} position={[0.6, 1.7, 0]}>
-        <meshStandardMaterial color={bodyColor} />
-      </Sphere>
-      <Sphere args={[0.15, 32, 32]} position={[0.6, 1.7, 0.15]} scale={[1, 1, 0.2]}>
-        <meshStandardMaterial color={bellyColor} />
-      </Sphere>
-
+    <group ref={group} scale={0.8}>
       {/* Body */}
-      <Capsule args={[0.6, 0.8, 32, 32]} position={[0, 0, 0]}>
-        <meshStandardMaterial color={bodyColor} />
-      </Capsule>
-      <Capsule args={[0.4, 0.6, 32, 32]} position={[0, 0.1, 0.25]} scale={[1, 1, 0.5]}>
-        <meshStandardMaterial color={bellyColor} />
-      </Capsule>
+      <Sphere args={[0.7, 64, 64]} position={[0, -0.2, 0]} scale={[1, 0.9, 1]}>
+        <meshStandardMaterial color={furWhite} roughness={0.8} />
+      </Sphere>
+
+      {/* Head Group */}
+      <group ref={head} position={[0, 0.8, 0]}>
+        {/* Main Head */}
+        <Sphere args={[0.85, 64, 64]} scale={[1, 0.9, 1]}>
+          <meshStandardMaterial color={furWhite} roughness={0.8} />
+        </Sphere>
+
+        {/* Ears */}
+        <Sphere args={[0.25, 32, 32]} position={[-0.6, 0.6, -0.2]}>
+          <meshStandardMaterial color={furBlack} roughness={0.9} />
+        </Sphere>
+        <Sphere args={[0.25, 32, 32]} position={[0.6, 0.6, -0.2]}>
+          <meshStandardMaterial color={furBlack} roughness={0.9} />
+        </Sphere>
+
+        {/* Eye Patches (Black) */}
+        <Sphere args={[0.25, 32, 32]} position={[-0.35, 0.1, 0.65]} scale={[1.2, 1, 0.4]} rotation={[0, 0, -0.2]}>
+          <meshStandardMaterial color={furBlack} roughness={0.9} />
+        </Sphere>
+        <Sphere args={[0.25, 32, 32]} position={[0.35, 0.1, 0.65]} scale={[1.2, 1, 0.4]} rotation={[0, 0, 0.2]}>
+          <meshStandardMaterial color={furBlack} roughness={0.9} />
+        </Sphere>
+
+        {/* Eyeballs (White) */}
+        <Sphere args={[0.08, 16, 16]} position={[-0.3, 0.15, 0.76]}>
+          <meshStandardMaterial color="#FFFFFF" />
+        </Sphere>
+        <Sphere args={[0.08, 16, 16]} position={[0.3, 0.15, 0.76]}>
+          <meshStandardMaterial color="#FFFFFF" />
+        </Sphere>
+
+        {/* Pupils (Black) */}
+        <Sphere args={[0.04, 16, 16]} position={[-0.28, 0.16, 0.82]}>
+          <meshStandardMaterial color="#000000" />
+        </Sphere>
+        <Sphere args={[0.04, 16, 16]} position={[0.28, 0.16, 0.82]}>
+          <meshStandardMaterial color="#000000" />
+        </Sphere>
+
+        {/* Eye highlights (Tiny white dots) */}
+        <Sphere args={[0.015, 8, 8]} position={[-0.26, 0.18, 0.85]}>
+          <meshBasicMaterial color="#FFFFFF" />
+        </Sphere>
+        <Sphere args={[0.015, 8, 8]} position={[0.26, 0.18, 0.85]}>
+          <meshBasicMaterial color="#FFFFFF" />
+        </Sphere>
+
+        {/* Muzzle */}
+        <Sphere args={[0.35, 32, 32]} position={[0, -0.2, 0.75]} scale={[1.3, 0.8, 0.8]}>
+          <meshStandardMaterial color={furWhite} roughness={0.8} />
+        </Sphere>
+
+        {/* Nose */}
+        <Sphere args={[0.1, 16, 16]} position={[0, -0.1, 1.05]} scale={[1.2, 0.8, 0.8]}>
+          <meshStandardMaterial color="#111" />
+        </Sphere>
+
+        {/* Blush */}
+        <Sphere args={[0.15, 16, 16]} position={[-0.6, -0.1, 0.6]} scale={[1, 0.5, 0.2]}>
+          <meshStandardMaterial color={blushColor} opacity={0.6} transparent />
+        </Sphere>
+        <Sphere args={[0.15, 16, 16]} position={[0.6, -0.1, 0.6]} scale={[1, 0.5, 0.2]}>
+          <meshStandardMaterial color={blushColor} opacity={0.6} transparent />
+        </Sphere>
+      </group>
 
       {/* Arms */}
-      <group position={[-0.7, 0.4, 0]} ref={leftArm}>
-        <Capsule args={[0.2, 0.6, 16, 16]} position={[0, -0.4, 0]} rotation={[0, 0, 0.2]}>
-          <meshStandardMaterial color={bodyColor} />
+      <group position={[-0.65, 0.1, 0]} ref={leftArm}>
+        <Capsule args={[0.18, 0.5, 16, 16]} position={[0, -0.3, 0]} rotation={[0, 0, 0.2]}>
+          <meshStandardMaterial color={furBlack} roughness={0.9} />
         </Capsule>
       </group>
       
-      <group position={[0.7, 0.4, 0]}>
-        <Capsule args={[0.2, 0.6, 16, 16]} position={[0, -0.4, 0]} rotation={[0, 0, -0.2]}>
-          <meshStandardMaterial color={bodyColor} />
+      <group position={[0.65, 0.1, 0]} ref={rightArm}>
+        <Capsule args={[0.18, 0.5, 16, 16]} position={[0, -0.3, 0]} rotation={[0, 0, -0.2]}>
+          <meshStandardMaterial color={furBlack} roughness={0.9} />
         </Capsule>
       </group>
 
       {/* Legs */}
-      <Capsule args={[0.25, 0.5, 16, 16]} position={[-0.35, -0.8, 0.2]} rotation={[0.4, 0, 0]}>
-        <meshStandardMaterial color={bodyColor} />
+      <Capsule args={[0.2, 0.4, 16, 16]} position={[-0.35, -0.8, 0.2]} rotation={[0.4, 0, 0]}>
+        <meshStandardMaterial color={furBlack} roughness={0.9} />
       </Capsule>
-      <Capsule args={[0.25, 0.5, 16, 16]} position={[0.35, -0.8, 0.2]} rotation={[0.4, 0, 0]}>
-        <meshStandardMaterial color={bodyColor} />
+      <Capsule args={[0.2, 0.4, 16, 16]} position={[0.35, -0.8, 0.2]} rotation={[0.4, 0, 0]}>
+        <meshStandardMaterial color={furBlack} roughness={0.9} />
       </Capsule>
+
+      {/* Cute little tail */}
+      <Sphere args={[0.2, 16, 16]} position={[0, -0.5, -0.6]}>
+        <meshStandardMaterial color={furBlack} />
+      </Sphere>
     </group>
   );
 };
@@ -118,16 +144,20 @@ const CuteBear = () => {
 const MascotScene = () => {
   return (
     <>
-      <ambientLight intensity={0.8} />
-      <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={2} color="#ffffff" castShadow />
-      <pointLight position={[-10, -10, -10]} intensity={1} color="#FF9800" />
-      <Environment preset="sunset" />
+      <ambientLight intensity={1.2} />
+      {/* Key Light */}
+      <spotLight position={[10, 15, 10]} angle={0.3} penumbra={1} intensity={2.5} color="#ffffff" castShadow />
+      {/* Fill Light */}
+      <pointLight position={[-10, 5, 10]} intensity={1.5} color="#FFD180" />
+      {/* Rim Light for cinematic look */}
+      <pointLight position={[0, 5, -10]} intensity={3} color="#80D8FF" />
+      <Environment preset="city" />
       
-      <Float speed={2} rotationIntensity={0.5} floatIntensity={1}>
-        <CuteBear />
+      <Float speed={2.5} rotationIntensity={0.2} floatIntensity={0.5}>
+        <CutePanda />
       </Float>
 
-      <ContactShadows position={[0, -2, 0]} opacity={0.6} scale={15} blur={2.5} far={4} color="#FF9800" />
+      <ContactShadows position={[0, -1.5, 0]} opacity={0.5} scale={10} blur={3} far={4} color="#000000" />
     </>
   );
 };
